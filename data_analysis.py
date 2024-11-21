@@ -7,15 +7,12 @@ def create_graph_whole_period(df: pd.DataFrame):
         df: DataFrame, содержащий столбцы 'date' и 'value'.
     """
     plt.figure(figsize=(10, 6))
-    plt.plot(df['date'], df['value'], marker='o', linestyle='-', color='b', label='Value')
+    plt.plot(df['date'], df['value'], linestyle='-', color='b', label='Value')
 
     plt.title('Изменение курса за весь период', fontsize=16)
     plt.xlabel('Дата', fontsize=14)
     plt.ylabel('Курс', fontsize=14)
     plt.xticks(rotation=45)
-
-    for i, value in enumerate(df['value']):
-        plt.text(df['date'].iloc[i], value, f'{value:.2f}', fontsize=6, ha='right')
 
     plt.grid(True)
     plt.legend()
@@ -148,10 +145,15 @@ def main():
     df['deviation_from_mean'] = df['value'] - mean_value
 
     stats = df[['value', 'deviation_from_median', 'deviation_from_mean']].describe()
+    print("Датафрейм с новыми столбцами")
     print(df)
+    print("Describe")
     print(stats)
+    print("Фильтр по отклонению")
     print(filter_by_deviation(df=df,threshold=threshold))
+    print("Фильтр по дате")
     print(filter_by_date(df=df, start_date=start_date, end_date=end_date))
+    print("Среднее значение за месяц")
     print(calculate_mean_by_month(df=df))
     create_graph_whole_period(df=df)
     create_graph_month(df=df, month=month)
